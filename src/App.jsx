@@ -110,7 +110,7 @@ const invitationData = {
     ceremony: 'https://maps.google.com/?q=Irapuato%20Guanajuato',
     reception: 'https://maps.google.com/?q=Irapuato%20Guanajuato',
   },
-  music: '/assets/music.mp3',
+  music: '/assets/music.wav',
   socialLinks: {
     instagram: 'https://www.instagram.com/explore/tags/XVCamilaFernandez/',
     spotify: 'https://open.spotify.com/',
@@ -435,6 +435,14 @@ function Section({ id, title, icon: Icon = Sparkles, children, className = '' })
 }
 
 function Hero() {
+  const timeLeft = useCountdown(invitationData.targetDate);
+  const units = [
+    ['Dias', timeLeft.days],
+    ['Horas', timeLeft.hours],
+    ['Minutos', timeLeft.minutes],
+    ['Segundos', timeLeft.seconds],
+  ];
+
   return (
     <section id="inicio" className="hero reveal">
       <DiamondParticles />
@@ -448,6 +456,17 @@ function Hero() {
         <OrnamentDivider />
         <p className="hero-phrase">"{invitationData.phrase}"</p>
         <QuinceaneraPhoto />
+        <div className="hero-countdown" aria-label="Cuenta regresiva para los XV años">
+          <p>Faltan para mi gran noche</p>
+          <div className="countdown-grid compact">
+            {units.map(([label, value], index) => (
+              <div className="count-card" key={label} data-animate style={{ '--delay': `${index * 80}ms` }}>
+                <strong>{String(value).padStart(2, '0')}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="hero-meta">
           <article className="intro-detail-card" data-animate style={{ '--delay': '140ms' }}>
             <CalendarDays size={25} />
@@ -989,17 +1008,14 @@ export default function App() {
     if (isOpening) return;
     setIsOpening(true);
 
-    try {
-      await audioRef.current?.play();
-      setIsPlaying(true);
-    } catch {
-      setIsPlaying(false);
-    }
-
     window.setTimeout(() => {
       setOpened(true);
       window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 80);
-    }, 1050);
+    }, 1250);
+
+    audioRef.current?.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
   };
 
   return (
@@ -1010,15 +1026,14 @@ export default function App() {
       ) : (
         <main className={`app-shell ${STORY_MODE ? 'story-mode' : ''}`}>
           <Hero />
+          <Gallery />
           <GuestPass />
-          <Countdown />
           <MessageSection />
           <ParentsAndGodparents />
           <EventLocations />
           <Timeline />
           <DressCode />
           <HonorCourt />
-          <Gallery />
           <Gifts />
           <Playlist />
           <HashtagSection />
