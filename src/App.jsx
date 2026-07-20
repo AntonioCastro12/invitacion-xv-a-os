@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { QRCodeCanvas } from 'qrcode.react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   CalendarDays,
   Camera,
@@ -25,6 +24,9 @@ import {
 } from 'lucide-react';
 
 const STORY_MODE = false;
+const QRCodeCanvas = lazy(() =>
+  import('qrcode.react').then((module) => ({ default: module.QRCodeCanvas }))
+);
 
 const invitationData = {
   quinceaneraName: 'Camila Fernandez',
@@ -261,36 +263,6 @@ function OrnamentDivider() {
   );
 }
 
-function LuxuryCarVisual() {
-  const [useFallback, setUseFallback] = useState(false);
-
-  return (
-    <div className="car-stage" aria-label="Auto elegante de lujo">
-      <div className="car-glow" />
-      {!useFallback ? (
-        <img
-          className="car-image"
-          src="/assets/car.png"
-          alt="Auto elegante generico"
-          onError={() => setUseFallback(true)}
-        />
-      ) : (
-        <div className="css-car" aria-hidden="true">
-          <div className="car-top" />
-          <div className="car-body" />
-          <div className="car-light left" />
-          <div className="car-light right" />
-          <div className="wheel wheel-left" />
-          <div className="wheel wheel-right" />
-        </div>
-      )}
-      <div className="floor-reflection" />
-      <Diamond className="car-diamond diamond-one" aria-hidden="true" />
-      <Diamond className="car-diamond diamond-two" aria-hidden="true" />
-    </div>
-  );
-}
-
 function QuinceaneraPhoto() {
   const [useFallback, setUseFallback] = useState(false);
 
@@ -359,7 +331,7 @@ function IntroScreen({ onOpen, isOpening }) {
           <span className="envelope-edge edge-bottom" />
         </div>
         <button className="envelope-seal" type="button" onClick={onOpen} disabled={isOpening} aria-label="Abrir invitacion">
-          <img className="seal-image" src="/assets/seal-xv-small-transparent.png" alt="" decoding="async" />
+          <img className="seal-image" src="/assets/seal-xv-intro.png" alt="" decoding="async" fetchPriority="high" />
           <small>Toca para abrir</small>
         </button>
         <p className="intro-date">{invitationData.date}</p>
@@ -417,6 +389,14 @@ function ShareButton({ className = '', compact = false }) {
       <Share2 size={17} />
       {!compact && 'Compartir'}
     </button>
+  );
+}
+
+function InviteQRCode({ value, size }) {
+  return (
+    <Suspense fallback={<div className="qr-placeholder" aria-hidden="true" />}>
+      <QRCodeCanvas value={value} size={size} bgColor="#FFF7F3" fgColor="#0B0B0F" includeMargin />
+    </Suspense>
   );
 }
 
@@ -522,7 +502,7 @@ function GuestPass() {
             <strong>{guestStatus}</strong>
           </div>
           <div className="qr-frame" data-animate style={{ '--delay': '150ms' }}>
-            <QRCodeCanvas value={invitationUrl} size={150} bgColor="#FFF7F3" fgColor="#0B0B0F" includeMargin />
+            <InviteQRCode value={invitationUrl} size={150} />
           </div>
         </div>
         <button className="secondary-button full" type="button" onClick={handleShare} aria-label="Compartir pase">
@@ -967,7 +947,7 @@ function QRSection() {
   return (
     <Section id="qr" title="Escanea y guarda esta invitacion" icon={Diamond}>
       <div className="qr-section-card">
-        <QRCodeCanvas value={invitationUrl} size={170} bgColor="#FFF7F3" fgColor="#0B0B0F" includeMargin />
+        <InviteQRCode value={invitationUrl} size={170} />
         <div className="inline-actions">
           <button className="ghost-button" type="button" onClick={copyUrl} aria-label="Copiar enlace">
             <Copy size={17} />

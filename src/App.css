@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Carattere&family=Cinzel:wght@400;500;600;700&family=Niconne&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap");
-
 :root {
   color: #fff7dc;
   background: #011260;
@@ -84,6 +82,15 @@ video,
 canvas {
   display: block;
   max-width: 100%;
+}
+
+.qr-placeholder {
+  width: 170px;
+  height: 170px;
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(255, 248, 230, 0.9), rgba(242, 214, 127, 0.25)),
+    rgba(255, 248, 230, 0.82);
 }
 
 .intro-screen,
@@ -631,7 +638,7 @@ canvas {
   pointer-events: none;
   background:
     linear-gradient(180deg, rgba(1, 18, 96, 0.2), rgba(1, 11, 63, 0.82)),
-    url("/assets/hero-camila.png") center 8% / cover no-repeat;
+    url("/assets/hero-camila-opt.jpg") center 8% / cover no-repeat;
   opacity: 0.22;
   filter: saturate(0.75) blur(2px);
   transform: scale(1.04);
@@ -1597,6 +1604,7 @@ body {
   border-radius: 50%;
   background: transparent;
   box-shadow: 0 0 42px rgba(246, 215, 120, 0.34), 0 30px 62px rgba(0, 0, 0, 0.56);
+  animation: none;
 }
 
 .envelope-seal::before,
@@ -1613,7 +1621,7 @@ body {
   filter:
     drop-shadow(0 0 18px rgba(246, 215, 120, 0.52))
     drop-shadow(0 20px 28px rgba(0, 0, 0, 0.45));
-  animation: sealImageGlow 3.4s ease-in-out infinite;
+  animation: none;
 }
 
 .envelope-seal small {
@@ -1652,7 +1660,7 @@ body {
 .hero::before {
   background:
     linear-gradient(180deg, rgba(2, 3, 10, 0.18), rgba(2, 3, 10, 0.78)),
-    url("/assets/hero-camila.png") center 8% / cover no-repeat;
+    url("/assets/hero-camila-opt.jpg") center 8% / cover no-repeat;
   opacity: 0.28;
   filter: saturate(0.84) contrast(1.08) blur(1.5px);
 }
@@ -2180,7 +2188,7 @@ body {
   }
 
   .envelope-seal {
-    animation: softScalePulse 4.2s ease-in-out infinite;
+    animation: none;
   }
 
   .seal-image {
