@@ -99,10 +99,10 @@ const invitationData = {
     },
   },
   gallery: [
-    '/assets/moment-tiara.png',
-    '/assets/moment-cake.png',
-    '/assets/moment-ballroom.png',
-    '/assets/moment-toast.png',
+    '/assets/moment-tiara-opt.jpg',
+    '/assets/moment-cake-opt.jpg',
+    '/assets/moment-ballroom-opt.jpg',
+    '/assets/moment-toast-opt.jpg',
   ],
   video: '',
   whatsapp: 'https://wa.me/52462XXXXXXX',
@@ -216,7 +216,7 @@ function shareInvite(title, text, url = window.location.href) {
 function DiamondParticles() {
   return (
     <div className="diamond-particles" aria-hidden="true">
-      {Array.from({ length: 34 }).map((_, index) => (
+      {Array.from({ length: 16 }).map((_, index) => (
         <span key={index} style={{ '--i': index }} />
       ))}
     </div>
@@ -298,8 +298,10 @@ function QuinceaneraPhoto() {
     <div className="quince-photo-card" aria-label="Foto de quinceanera">
       {!useFallback ? (
         <img
-          src="/assets/hero-camila.png"
+          src="/assets/hero-camila-opt.jpg"
           alt="Quinceanera con vestido elegante"
+          decoding="async"
+          fetchPriority="high"
           onError={() => setUseFallback(true)}
         />
       ) : (
@@ -357,7 +359,7 @@ function IntroScreen({ onOpen, isOpening }) {
           <span className="envelope-edge edge-bottom" />
         </div>
         <button className="envelope-seal" type="button" onClick={onOpen} disabled={isOpening} aria-label="Abrir invitacion">
-          <img className="seal-image" src="/assets/seal-xv-transparent.png" alt="" />
+          <img className="seal-image" src="/assets/seal-xv-small-transparent.png" alt="" decoding="async" />
           <small>Toca para abrir</small>
         </button>
         <p className="intro-date">{invitationData.date}</p>
@@ -696,7 +698,7 @@ function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [brokenImages, setBrokenImages] = useState(new Set());
   const carouselImages = useMemo(() => {
-    const images = ['/assets/hero-camila.png', ...invitationData.gallery];
+    const images = ['/assets/hero-camila-opt.jpg', ...invitationData.gallery];
     return images
       .map((image) => ({ image, order: Math.random() }))
       .sort((a, b) => a.order - b.order)
@@ -725,7 +727,13 @@ function Gallery() {
             {brokenImages.has(image) ? (
               <span><Diamond size={28} /> Momento {index + 1}</span>
             ) : (
-              <img src={image} alt={`Momento especial ${index + 1}`} onError={() => markBroken(image)} />
+              <img
+                src={image}
+                alt={`Momento especial ${index + 1}`}
+                loading="lazy"
+                decoding="async"
+                onError={() => markBroken(image)}
+              />
             )}
           </button>
         ))}
@@ -1011,11 +1019,11 @@ export default function App() {
     window.setTimeout(() => {
       setOpened(true);
       window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 80);
-    }, 1250);
 
-    audioRef.current?.play()
-      .then(() => setIsPlaying(true))
-      .catch(() => setIsPlaying(false));
+      audioRef.current?.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
+    }, 1250);
   };
 
   return (

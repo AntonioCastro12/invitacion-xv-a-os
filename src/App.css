@@ -2125,6 +2125,112 @@ body {
   50% { box-shadow: 0 0 0 8px rgba(242, 214, 127, 0), 0 0 28px rgba(242, 214, 127, 0.88); }
 }
 
+.section {
+  content-visibility: auto;
+  contain-intrinsic-size: 760px;
+}
+
+.hero,
+#galeria {
+  content-visibility: visible;
+}
+
+.gallery-track,
+.intro-screen.is-opening .envelope-panel,
+.intro-screen.is-opening .envelope-copy {
+  will-change: transform, opacity;
+}
+
+.gallery-track {
+  transform: translate3d(0, 0, 0);
+}
+
+.gallery-item img,
+.quince-photo-card img,
+.seal-image {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+@keyframes softScalePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.018);
+  }
+}
+
+@media (max-width: 700px) {
+  body::before,
+  .hero::after,
+  .section::after {
+    animation: none;
+  }
+
+  .hero::after,
+  .section::after {
+    opacity: 0.2;
+  }
+
+  .diamond-particles span:nth-child(n + 13),
+  .photo-sparkle.sparkle-c,
+  .floral-corner .gem {
+    display: none;
+  }
+
+  .envelope-seal {
+    animation: softScalePulse 4.2s ease-in-out infinite;
+  }
+
+  .seal-image {
+    animation: none;
+    filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.38));
+  }
+
+  .quince-photo-card,
+  .timeline-item::before {
+    animation: none;
+  }
+
+  .hero-music-orb,
+  .music-button {
+    backdrop-filter: none;
+  }
+
+  .hero-countdown,
+  .intro-detail-card,
+  .guest-pass,
+  .glass-card,
+  .event-card,
+  .dress-card,
+  .bank-card,
+  .hashtag-card,
+  .qr-section-card,
+  .rsvp-form {
+    backdrop-filter: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 12px 26px rgba(0, 8, 45, 0.28);
+  }
+
+  .gallery-track {
+    animation-duration: 46s;
+  }
+
+  .gallery-track .gallery-item {
+    box-shadow:
+      0 12px 26px rgba(0, 0, 0, 0.36),
+      inset 0 1px 0 rgba(255, 244, 200, 0.12);
+  }
+
+  .primary-button::after,
+  .secondary-button::after,
+  .ghost-button::after {
+    animation-duration: 7s;
+  }
+}
+
 @media (min-width: 390px) {
   .hero-actions,
   .inline-actions,
